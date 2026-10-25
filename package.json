@@ -1,0 +1,22 @@
+{
+  "name": "faculty-career-advancement-system",
+  "version": "1.0.0",
+  "description": "Faculty Career Advancement & Publication Summary Generator - Full Stack Academic Management System",
+  "scripts": {
+    "seed": "cd backend && npm run seed",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start"
+  },
+  "keywords": [
+    "faculty",
+    "academic-portfolio",
+    "career-advancement",
+    "publications",
+    "summary-generator",
+    "mern-stack"
+  ],
+  "author": "FSD Project Team",
+  "license": "ISC"
+}
