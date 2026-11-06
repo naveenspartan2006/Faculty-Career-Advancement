@@ -232,6 +232,17 @@ const CareerSummary = () => {
                     {p.journalName || p.conferenceName || 'Independent Record'} • {p.publicationType} • {p.indexing}
                     {p.doi && ` • DOI: ${p.doi}`}
                   </div>
+                  {p.fileUrl && (
+                    <div className="no-print" style={{ marginTop: '0.4rem' }}>
+                      <a
+                        href={p.fileUrl}
+                        download={p.fileName || 'research-paper'}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.78rem', color: '#059669', fontWeight: '600' }}
+                      >
+                        <Download size={12} /> {p.fileName || 'Download Paper'}
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -287,6 +298,17 @@ const CareerSummary = () => {
                   <div style={{ color: 'var(--slate-500)', fontSize: '0.8rem', marginTop: '0.2rem' }}>
                     {a.organization} • Level: {a.level} • Category: {a.category}
                   </div>
+                  {a.fileUrl && (
+                    <div className="no-print" style={{ marginTop: '0.35rem' }}>
+                      <a
+                        href={a.fileUrl}
+                        download={a.fileName || 'achievement-certificate'}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem', color: '#059669', fontWeight: '600' }}
+                      >
+                        <Download size={11} /> {a.fileName || 'Download Proof / Certificate'}
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -302,8 +324,21 @@ const CareerSummary = () => {
               </h2>
               <ul style={{ paddingLeft: '1.25rem', fontSize: '0.85rem', color: 'var(--slate-700)' }}>
                 {certifications.map((c) => (
-                  <li key={c._id} style={{ marginBottom: '0.4rem' }}>
-                    <strong>{c.name}</strong> — {c.issuingOrganization} ({formatDate(c.issueDate)})
+                  <li key={c._id} style={{ marginBottom: '0.5rem' }}>
+                    <div>
+                      <strong>{c.name}</strong> — {c.issuingOrganization} ({formatDate(c.issueDate)})
+                    </div>
+                    {c.fileUrl && (
+                      <div className="no-print" style={{ marginTop: '0.2rem' }}>
+                        <a
+                          href={c.fileUrl}
+                          download={c.fileName || 'certificate'}
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem', color: '#059669', fontWeight: '600' }}
+                        >
+                          <Download size={11} /> {c.fileName || 'Download Certificate'}
+                        </a>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -317,8 +352,21 @@ const CareerSummary = () => {
               </h2>
               <ul style={{ paddingLeft: '1.25rem', fontSize: '0.85rem', color: 'var(--slate-700)' }}>
                 {conferences.map((ev) => (
-                  <li key={ev._id} style={{ marginBottom: '0.4rem' }}>
-                    <strong>{ev.eventName}</strong> — Role: {ev.role} ({ev.organizer}, {formatDate(ev.startDate)})
+                  <li key={ev._id} style={{ marginBottom: '0.5rem' }}>
+                    <div>
+                      <strong>{ev.eventName}</strong> — Role: {ev.role} ({ev.organizer}, {formatDate(ev.startDate)})
+                    </div>
+                    {ev.fileUrl && (
+                      <div className="no-print" style={{ marginTop: '0.2rem' }}>
+                        <a
+                          href={ev.fileUrl}
+                          download={ev.fileName || 'conference-paper'}
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem', color: '#059669', fontWeight: '600' }}
+                        >
+                          <Download size={11} /> {ev.fileName || 'Download Paper'}
+                        </a>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, GraduationCap, ShieldCheck, UserCheck, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, GraduationCap, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
@@ -40,26 +40,6 @@ const Login = () => {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleQuickLogin = (demoEmail, demoPassword) => {
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-    // Directly submit
-    setTimeout(() => {
-      login(demoEmail, demoPassword)
-        .then((user) => {
-          toastSuccess(`Logged in as ${user.name}`);
-          if (user.role === 'admin') {
-            navigate('/admin/dashboard');
-          } else {
-            navigate('/dashboard');
-          }
-        })
-        .catch((err) => {
-          toastError(err.response?.data?.message || 'Login failed');
-        });
-    }, 100);
   };
 
   return (
@@ -212,72 +192,6 @@ const Login = () => {
           <Link to="/register" style={{ fontWeight: '700', color: isDark ? '#f87171' : '#4338ca' }}>
             Register Account
           </Link>
-        </div>
-
-        {/* 1-Click Evaluation Accounts */}
-        <div
-          style={{
-            marginTop: '2rem',
-            padding: '1.25rem',
-            background: isDark ? '#090a10' : '#f8fafc',
-            borderRadius: '12px',
-            border: isDark ? '1px solid #1c2033' : '1px solid #e2e8f0'
-          }}
-        >
-          <div
-            style={{
-              fontSize: '0.75rem',
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: isDark ? '#ef4444' : '#475569',
-              marginBottom: '0.75rem',
-              textAlign: 'center'
-            }}
-          >
-            ⚡ Quick Demo Accounts (1-Click Login)
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
-              onClick={() => handleQuickLogin('dr.rajesh@college.edu', 'Faculty@123')}
-              style={{ justifyContent: 'space-between', width: '100%', fontSize: '0.8rem', background: isDark ? '#121420' : '#ffffff', borderColor: isDark ? '#23283e' : '#cbd5e1' }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <UserCheck size={14} color={isDark ? '#f87171' : '#4338ca'} />
-                <strong>Dr. Rajesh Kumar</strong> (CSD Professor)
-              </span>
-              <span style={{ fontSize: '0.75rem', color: isDark ? '#94a3b8' : '#64748b' }}>Faculty</span>
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
-              onClick={() => handleQuickLogin('dr.priya@college.edu', 'Faculty@123')}
-              style={{ justifyContent: 'space-between', width: '100%', fontSize: '0.8rem', background: isDark ? '#121420' : '#ffffff', borderColor: isDark ? '#23283e' : '#cbd5e1' }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <UserCheck size={14} color="#34d399" />
-                <strong>Dr. Priya Sharma</strong> (ECE Assoc. Prof)
-              </span>
-              <span style={{ fontSize: '0.75rem', color: isDark ? '#94a3b8' : '#64748b' }}>Faculty</span>
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
-              onClick={() => handleQuickLogin('admin@college.edu', 'Admin@123')}
-              style={{ justifyContent: 'space-between', width: '100%', fontSize: '0.8rem', background: isDark ? '#121420' : '#ffffff', borderColor: isDark ? '#23283e' : '#cbd5e1' }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <ShieldCheck size={14} color={isDark ? '#c084fc' : '#7c3aed'} />
-                <strong>System Academic Dean</strong>
-              </span>
-              <span style={{ fontSize: '0.75rem', color: isDark ? '#c084fc' : '#7c3aed', fontWeight: '700' }}>Admin</span>
-            </button>
-          </div>
         </div>
       </div>
     </div>

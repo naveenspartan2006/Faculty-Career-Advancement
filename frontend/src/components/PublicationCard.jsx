@@ -8,7 +8,8 @@ import {
   Edit2,
   Trash2,
   CheckCircle2,
-  Bookmark
+  Bookmark,
+  Download
 } from 'lucide-react';
 import { formatDate, formatYear } from '../utils/formatters';
 
@@ -135,6 +136,30 @@ const PublicationCard = ({ publication, onEdit, onDelete, canModify = true }) =>
               lineHeight: '1.6'
             }}>
               {publication.abstract}
+            </div>
+          )}
+
+          {publication.fileUrl && (
+            <div style={{ marginTop: '0.65rem' }}>
+              <a
+                href={publication.fileUrl}
+                download={publication.fileName || 'research-paper'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.8rem',
+                  color: '#047857',
+                  backgroundColor: '#ecfdf5',
+                  border: '1px solid #a7f3d0',
+                  borderRadius: '6px',
+                  padding: '0.3rem 0.65rem',
+                  fontWeight: '600',
+                  textDecoration: 'none'
+                }}
+              >
+                <Download size={13} /> {publication.fileName || 'Download Attached Paper'}
+              </a>
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { BookOpen, ArrowLeft, Save, CheckCircle2 } from 'lucide-react';
+import { BookOpen, ArrowLeft, Save, CheckCircle2, Paperclip, X } from 'lucide-react';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import Loading from '../components/Loading';
@@ -32,8 +32,32 @@ const AddPublication = () => {
     keywords: '',
     indexing: 'Scopus',
     status: 'Published',
-    url: ''
+    url: '',
+    fileName: '',
+    fileUrl: ''
   });
+
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      toastError('File size exceeds 10MB limit. Please choose a smaller file.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setFormData((prev) => ({ ...prev, fileName: file.name, fileUrl: ev.target.result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleClearFile = () => {
+    setFormData((prev) => ({ ...prev, fileName: '', fileUrl: '' }));
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   useEffect(() => {
     if (isEditMode) {
@@ -60,7 +84,9 @@ const AddPublication = () => {
               keywords: Array.isArray(pub.keywords) ? pub.keywords.join(', ') : pub.keywords || '',
               indexing: pub.indexing || 'Scopus',
               status: pub.status || 'Published',
-              url: pub.url || ''
+              url: pub.url || '',
+              fileName: pub.fileName || '',
+              fileUrl: pub.fileUrl || ''
             });
           }
         } catch (err) {
@@ -422,6 +448,43 @@ const AddPublication = () => {
               value={formData.url}
               onChange={handleChange}
             />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Paperclip size={14} /> Attach Research Paper File (PDF / Image)
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              >
+                <Paperclip size={14} /> Choose File
+              </button>
+              {formData.fileName ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#059669', fontWeight: '600' }}>
+                  <CheckCircle2 size={14} /> {formData.fileName}
+                  <button
+                    type="button"
+                    onClick={handleClearFile}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0 }}
+                    title="Remove file"
+                  >
+                    <X size={14} />
+                  </button>
+                </span>
+              ) : (
+                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>No file chosen</span>
+              )}
+            </div>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>

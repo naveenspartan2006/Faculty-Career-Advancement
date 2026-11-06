@@ -32,7 +32,7 @@ const seedData = async () => {
 
     // 1. Admin User
     await User.create({
-      name: 'System Academic Dean (Admin)',
+      name: 'Divya (Admin)',
       email: 'admin@college.edu',
       password: 'Admin@123',
       role: 'admin',

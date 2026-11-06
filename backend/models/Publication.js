@@ -94,6 +94,16 @@ const publicationSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: ''
+    },
+    fileName: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    fileUrl: {
+      type: String,
+      trim: true,
+      default: ''
     }
   },
   {

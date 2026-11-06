@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Award, Plus, Calendar, ExternalLink, Edit2, Trash2, Search, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Award, Plus, Calendar, ExternalLink, Edit2, Trash2, Search, CheckCircle2, Paperclip, Download, X } from 'lucide-react';
 import api from '../services/api';
 import Modal from '../components/Modal';
 import Loading from '../components/Loading';
@@ -26,8 +26,32 @@ const Certifications = () => {
     expiryDate: '',
     credentialId: '',
     credentialUrl: '',
-    description: ''
+    description: '',
+    fileName: '',
+    fileUrl: ''
   });
+
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      toastError('File size exceeds 10MB limit. Please choose a smaller file.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setFormData((prev) => ({ ...prev, fileName: file.name, fileUrl: ev.target.result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleClearFile = () => {
+    setFormData((prev) => ({ ...prev, fileName: '', fileUrl: '' }));
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const fetchCertifications = async () => {
     try {
@@ -58,8 +82,11 @@ const Certifications = () => {
       expiryDate: '',
       credentialId: '',
       credentialUrl: '',
-      description: ''
+      description: '',
+      fileName: '',
+      fileUrl: ''
     });
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setModal({ isOpen: true, isEdit: false, id: null, saving: false });
   };
 
@@ -71,8 +98,11 @@ const Certifications = () => {
       expiryDate: item.expiryDate ? item.expiryDate.split('T')[0] : '',
       credentialId: item.credentialId || '',
       credentialUrl: item.credentialUrl || '',
-      description: item.description || ''
+      description: item.description || '',
+      fileName: item.fileName || '',
+      fileUrl: item.fileUrl || ''
     });
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setModal({ isOpen: true, isEdit: true, id: item._id, saving: false });
   };
 
@@ -234,6 +264,30 @@ const Certifications = () => {
                     </a>
                   </div>
                 )}
+
+                {cert.fileUrl && (
+                  <div style={{ marginTop: '0.65rem' }}>
+                    <a
+                      href={cert.fileUrl}
+                      download={cert.fileName || 'certificate'}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                        fontSize: '0.8rem',
+                        color: '#047857',
+                        backgroundColor: '#ecfdf5',
+                        border: '1px solid #a7f3d0',
+                        borderRadius: '6px',
+                        padding: '0.3rem 0.65rem',
+                        fontWeight: '600',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      <Download size={13} /> {cert.fileName || 'Download Certificate'}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -349,6 +403,43 @@ const Certifications = () => {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Paperclip size={14} /> Attach File (PDF / Image)
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              >
+                <Paperclip size={14} /> Choose File
+              </button>
+              {formData.fileName ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#059669', fontWeight: '600' }}>
+                  <CheckCircle2 size={14} /> {formData.fileName}
+                  <button
+                    type="button"
+                    onClick={handleClearFile}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 0 }}
+                    title="Remove file"
+                  >
+                    <X size={14} />
+                  </button>
+                </span>
+              ) : (
+                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>No file chosen</span>
+              )}
+            </div>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>

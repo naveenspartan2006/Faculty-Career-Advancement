@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Calendar, Award, ExternalLink, Edit2, Trash2 } from 'lucide-react';
+import { Trophy, Calendar, Award, ExternalLink, Edit2, Trash2, Download } from 'lucide-react';
 import { formatDate } from '../utils/formatters';
 
 const AchievementCard = ({ achievement, onEdit, onDelete, canModify = true }) => {
@@ -63,6 +63,30 @@ const AchievementCard = ({ achievement, onEdit, onDelete, canModify = true }) =>
               </a>
             )}
           </div>
+
+          {achievement.fileUrl && (
+            <div style={{ marginTop: '0.65rem' }}>
+              <a
+                href={achievement.fileUrl}
+                download={achievement.fileName || 'achievement-certificate'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.8rem',
+                  color: '#047857',
+                  backgroundColor: '#ecfdf5',
+                  border: '1px solid #a7f3d0',
+                  borderRadius: '6px',
+                  padding: '0.3rem 0.65rem',
+                  fontWeight: '600',
+                  textDecoration: 'none'
+                }}
+              >
+                <Download size={13} /> {achievement.fileName || 'Download Attached Certificate / Proof'}
+              </a>
+            </div>
+          )}
         </div>
 
         {canModify && (
