@@ -1,4 +1,5 @@
 # FACULTY CAREER ADVANCEMENT & PUBLICATION SUMMARY GENERATOR
+https://faculty-career-advancement-mw8y27rnn-personal-b135.vercel.app/dashboard
 
 > A centralized institutional web application designed for higher education faculty and academic administrators. It maintains comprehensive academic portfolios, tracks research output and publications, provides real-time analytics, and automatically compiles dynamic, audit-ready **Career Advancement Summaries** and **Publication Summaries** directly from MongoDB.
 
